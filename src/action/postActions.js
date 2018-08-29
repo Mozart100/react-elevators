@@ -12,6 +12,24 @@ export const fetchPosts =()=> dispatch => {
 }
 
 
+export const postNewPost =(post)=> dispatch => {
+  fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: "POST",
+      body: JSON.stringify(post),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: NEW_POSTS,
+          payload: data
+        })
+      })
+}
+
+
 
 // export default function fetchPosts() {
 //   var func = function () {

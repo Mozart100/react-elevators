@@ -8,24 +8,19 @@ class Posts extends Component {
   componentWillMount() {
     this.props.fetchPosts();
   }
-  // constructor(props) {
-  //   super(props);
 
-  //   this.state = {
-  //     posts: [],
-  //   }
-  // }
-
-  // componentWillMount() {
-  //   fetch('https://jsonplaceholder.typicode.com/posts')
-  //     .then(res => res.json())
-  //     .then(posts => this.setState({ posts }))
-  // }
+  componentWillReceiveProps(nextProps) {
+    // debugger;
+    if (nextProps.newPost)
+      nextProps.posts.unshift(nextProps.newPost);
+    // console.log(`componentWillReceiveProps -${nextProps.newPost}`);
+  }
 
   render() {
-    const posts = this.props.posts.map(x => <div key={x.id}>
-      <h3>{x.title}</h3>
-      <p>{x.body}</p>
+    const posts = this.props.posts.map((user,index) => <div key={index}>
+      <h2>{user.id}</h2>
+      <h3>{user.title}</h3>
+      <p>{user.body}</p>
     </div>)
 
     return (
@@ -37,28 +32,17 @@ class Posts extends Component {
   }
 }
 
-Posts.PropTypes = {
+Posts.propTypes = {
   fetchPosts: PropTypes.func.isRequired,
   posts: PropTypes.array.isRequired,
+  newPost: PropTypes.object
 };
+
 const mapStateToProps = state => ({
   posts: state.posts.items,
+  newPost: state.posts.item,
 });
 
 export default connect(mapStateToProps, { fetchPosts })(Posts);
 
 
-
-// constructor(props) {
-//   super(props);
-
-//   this.state = { posts: [] };
-
-// }
-// componentWillMount() {
-
-//   fetch('https://jsonplaceholder.typicode.com/posts')
-//     .then(res => res.json())
-//     // .then(data => console.log(data));
-//     .then(data => this.setState({ posts: data }));
-// }
