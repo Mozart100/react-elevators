@@ -36,10 +36,18 @@ class Postform extends Component {
 
   }
 
+  refPrint(e)
+  {
+    console.log(this.myBlock);
+  }
   render() {
     return (
       <div>
         <h1>Single Post</h1>
+
+        {/* <input type="text" ref={(input)=>{this.myBlock  = input}} value={this.state.title} onChange={this.onChange} />
+        <input type="button"  onChange={this.refPrint.bind(this)} /> */}
+
         <form onSubmit={this.onSubmit}>
           <div>
             <div>
