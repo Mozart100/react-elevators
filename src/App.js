@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 
-import Posts from './components/posts'
-import Postform from './components/postform'
-import Elevator from './components/elevator'
-import store from './store'
+import Building from './components/building' 
 
 class App extends Component {
   render() {
@@ -19,7 +16,11 @@ class App extends Component {
             <h1 className="App-title">Welcome to React</h1>
           </header>
 
-          <Elevator/>
+         <Building amountOfFloors={10}  elevator={1} />
+
+          {/* <Postform />
+          <Posts /> */}
+          {/* <Elevator/> */}
 
           {/* <p className="App-intro">
         Anatoliy
@@ -31,5 +32,10 @@ class App extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  posts: state.posts.items,
+  newPost: state.posts.item,
+});
 
 export default App;

@@ -9,6 +9,12 @@ class Posts extends Component {
     this.props.fetchPosts();
   }
 
+  static propTypes = {
+      fetchPosts: PropTypes.func.isRequired,
+      posts: PropTypes.array.isRequired,
+      newPost: PropTypes.object
+    };
+
   componentWillReceiveProps(nextProps) {
     // debugger;
     if (nextProps.newPost)
@@ -32,11 +38,11 @@ class Posts extends Component {
   }
 }
 
-Posts.propTypes = {
-  fetchPosts: PropTypes.func.isRequired,
-  posts: PropTypes.array.isRequired,
-  newPost: PropTypes.object
-};
+// Posts.propTypes = {
+//   fetchPosts: PropTypes.func.isRequired,
+//   posts: PropTypes.array.isRequired,
+//   newPost: PropTypes.object
+// };
 
 const mapStateToProps = state => ({
   posts: state.posts.items,
