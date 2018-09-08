@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { PropTypes } from '../../../node_modules/@types/react-router';
+import { elevatorFloorChanged } from '../action/elevatorAction'
+
 
 
 const bodyStyle = {
@@ -26,7 +27,7 @@ class Elevator extends Component {
       designatedFloor: 1,
       direction: 0,   //-1 0 1 
       top: 0,
-
+      delay: -1
     }
   }
 
@@ -44,7 +45,6 @@ class Elevator extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
 
-    console.log('nextProps =',nextProps);
     const { designatedFloor: propDesignatedFloor, elevatorId: propsId } = nextProps;
     const { currentFloor, designatedFloor: stateDesignatedFloor, id: stateId } = prevState;
 
@@ -52,49 +52,49 @@ class Elevator extends Component {
       return prevState;
     }
 
-    // debugger;
-
-    let newState = {
-      direction: 1,
-      designatedFloor: propDesignatedFloor
-    };
-
+    let direction = 0;
     if (currentFloor < propDesignatedFloor) {
-      newState = Object.assign({}, newState, { direction: 1 });
+      direction = 1;
     }
     else {
-      if (currentFloor === propDesignatedFloor) {
-        newState = Object.assign({}, newState, { direction: 0 });
-      }
-      else {
-        newState = Object.assign({}, newState, { direction: -1 })
+      if (currentFloor > propDesignatedFloor) {
+        direction = -1;
       };
     }
-
-    var result = Object.assign({}, prevState, newState);
-
-    return result;
+    console.log('Request From Elevator to get to =', propDesignatedFloor);
+    return Object.assign({}, prevState, { designatedFloor: propDesignatedFloor, direction });
   }
 
-  calculateCurrentFlorByPosition(position) {
-    return 10 - (position / 50)
-  }
 
-  calculatePositionOfTheFloor(floor) {
-
-    return 500 - ((floor * 50) + 50);
-  }
 
 
   TimerAction() {
-    const { currentFloor, designatedFloor, top, direction } = this.state;
+    const { currentFloor, designatedFloor, top, direction, delay, id: elevatorId } = this.state;
 
-    if (currentFloor === designatedFloor && direction !== 0) {
-      this.setState({ direction: 0 })
+    if (delay > 0) {
+      this.setState({ delay: delay - 1 }) // waiting for 2 [second]
       return;
     }
 
-    let toIncrement = this.calculateCurrentFlorByPosition(top);
+    if (direction === 0) {
+      return;
+    }
+
+    if (currentFloor === designatedFloor) {
+    // if (currentFloor === designatedFloor && direction !== 0) {
+      this.setState({ direction: 0, delay: 100 }) // 2 seconds beacuse each and every 10 ms it is invoked!
+      this.props.elevatorFloorChanged(elevatorId, designatedFloor, 0, designatedFloor);
+      return;
+    }
+
+    let toIncrement = this.calculateCurrentFloorByPosition(top);
+
+    if (Math.floor(toIncrement) === toIncrement && toIncrement !== currentFloor) {
+      // console.log('designatedFloor',designatedFloor);
+      this.props.elevatorFloorChanged(elevatorId, toIncrement, direction, designatedFloor);
+      // console.log('xxxxxdesignatedFloor',designatedFloor);
+
+    }
 
     if (direction === 1)
       this.setState({
@@ -108,6 +108,26 @@ class Elevator extends Component {
           currentFloor: toIncrement
         })
 
+
+
+    // if (currentFloor === designatedFloor) {
+    //   this.setState({ direction: 0, delay: 100 }) // 2 seconds beacuse each and every 10 ms it is invoked!
+    //   return;
+    // }
+
+    // if (Math.floor(toIncrement) === toIncrement && toIncrement !== currentFloor) {
+    //   this.props.elevatorFloorChanged(elevatorId, toIncrement, direction, designatedFloor);
+
+    // }
+
+  }
+
+  calculateCurrentFloorByPosition(position) {
+    return 10 - (position / 50)
+  }
+
+  calculatePositionOfTheFloor(floor) {
+    return 500 - ((floor * 50) + 50);
   }
 
   render() {
@@ -116,7 +136,7 @@ class Elevator extends Component {
     return (
       <div style={{ ...mystyle }}>
         <div >
-          <h1>{this.state.top} </h1>
+          <div>{this.state.top} </div>
         </div >
       </div>
     );
@@ -126,11 +146,6 @@ class Elevator extends Component {
 const mapStateToProps = state => ({
   elevatorId: state.elevetorReducer.elevatorInstruction.elevatorId,
   designatedFloor: state.elevetorReducer.elevatorInstruction.designatedFloor,
-  // designatedFloor: state.elevetorReducer.elevatorInstruction,
-  // currentFloor: state.elevetorReducer.elevatorInstruction.currentFloor,
-  // direction: state.elevetorReducer.elevatorInstruction.direction
-  // designatedFloor: state.elevetorReducer.elevatorInstruction.designatedFloor,
-  // direction: state.elevetorReducer.elevatorInstruction.direction
 });
 
-export default connect(mapStateToProps, {})(Elevator);
+export default connect(mapStateToProps, { elevatorFloorChanged })(Elevator);

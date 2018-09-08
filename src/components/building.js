@@ -13,13 +13,7 @@ const commonStyle =
 
 }
 
-const elevatorStyle = {
-  background: '#eee',
-  ...commonStyle,
 
-  // height:500,
-  width: '100%',
-}
 
 const floorsStyle = {
   background: 'green',
@@ -32,6 +26,18 @@ const floorsStyle = {
   // float:'right'
   // margin: 'auto'
 };
+
+
+const elevatorStyle = {
+  background: '#eee',
+  ...commonStyle,
+
+  // height:500,
+  // width: '100%',
+  width: '100px',
+  float: 'left'
+
+}
 
 class Building extends Component {
 
@@ -62,7 +68,6 @@ class Building extends Component {
 
   render() {
 
-
     console.log('this.state.elevators', this.state.elevators);
     return (
       <div >
@@ -72,9 +77,9 @@ class Building extends Component {
           </div>
 
           <div style={{ ...elevatorStyle }}>
-            <span >
               {this.state.elevators.map(e => <Elevator key={e} componentId={e}/>)}
-            </span>
+            {/* <span >
+            </span> */}
           </div>
 
         </div>

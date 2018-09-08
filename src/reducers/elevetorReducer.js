@@ -40,32 +40,53 @@ export default function (state = initialState, action) {
 
 
     case Designated_Floor_Number_Requested:
-      const requestedFloorNumber = payload;
-      var elev = findNeededElevator(newState.elevators, requestedFloorNumber, newState.amountOfFloors);
-      if (elev.direction !== 0) {
-        newState.requestedElevatorQueue.push(elev.designatedFloor)
-      }
-      elev.designatedFloor = requestedFloorNumber;
-      newState.elevatorInstruction = Object.assign({}, newState.elevatorInstruction, elev);
-      // newState.elevatorInstruction = Object.assign({}, newState.elevatorInstruction, elev, { elevatorId: elev.id });
-      return newState;
 
-    // case Designated_Floor_Number:
-    //   let item = Object.assign({}, state);
-    //   item.elevatorInstruction.designatedFloor = action.payload;
-    //   return item;
+      console.log('Designated_Floor_Number_Requested');
+      let item = locatingSuitableElevator(newState, payload);
+      return item;
 
     case Elevator_Changed_Floor:
 
-      const elevator = newState.elevators[action.payload.elevatorId];
-      elevator.currentFloor = action.payload.currentFloor;
-      elevator.direction = action.payload.direction;
-      elevator.designatedFloor = action.payload.designatedFloor;
-      return newState;
+
+      const elevator = newState.elevators[payload.elevatorId - 1];
+      elevator.currentFloor = payload.currentFloor;
+      elevator.direction = payload.direction;
+      elevator.designatedFloor = payload.designatedFloor;
+
+      let result = newState;
+      if (payload.designatedFloor === payload.currentFloor) // reached desitinatio which mean it ready to work
+      {
+        console.log('Elevator_Changed_Floor Reached Destination', payload);
+
+        const destinationFloor = result.requestedElevatorQueue.shift();
+        result = locatingSuitableElevator(newState, destinationFloor);
+      }
+      return result;
 
     default:
       return state;
   }
+}
+
+function locatingSuitableElevator(newState, payload) {
+
+  if (payload === undefined)
+    return newState;
+
+  const requestedFloorNumber = payload;
+  const elev = findNeededElevator(newState.elevators, requestedFloorNumber, newState.amountOfFloors);
+
+  if (elev === null) {
+    newState.requestedElevatorQueue.push(requestedFloorNumber);
+  }
+  else {
+    if (elev.direction !== 0) {
+      newState.requestedElevatorQueue.push(elev.designatedFloor)
+    }
+    elev.designatedFloor = requestedFloorNumber;
+    newState.elevatorInstruction = Object.assign({}, newState.elevatorInstruction, elev);
+  }
+  return newState;
 }
 
 function findNeededElevator(elevators, requestFloor, amountOfFloors) {
@@ -104,7 +125,7 @@ function transformElevatorsToFloorStructures(suitableElevators, amountOfFloors) 
 }
 
 
-function findAllElevetorsSuitableToRequestFloor(elevators, requestFloor) {
+function findAllElevetorsSuitableToRequestFloor(elevators, requestedFloor) {
   const elevs = []
 
   for (let index = 0; index < elevators.length; index++) {
@@ -115,10 +136,14 @@ function findAllElevetorsSuitableToRequestFloor(elevators, requestFloor) {
       continue;
     }
 
-    if (elev.currentFloor < requestFloor && elev.direction === 1)
+    //checking whether elevator heading in the right direction.
+    if (elev.currentFloor < requestedFloor && elev.direction === 1)
+      // if (elev.designatedFloor < requestedFloor )
+      // {
       elevs.push(elev);
+    // }
     else
-      if (elev.currentFloor > requestFloor && elev.direction === 0)
+      if (elev.currentFloor > requestedFloor && elev.direction === 0)
         elevs.push(elev);
   }
   return elevs;
