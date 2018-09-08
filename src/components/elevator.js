@@ -21,17 +21,18 @@ class Elevator extends Component {
     super(props);
 
     this.state = {
+      id: this.props.componentId,
       currentFloor: 1,
       designatedFloor: 1,
       direction: 0,   //-1 0 1 
       top: 0,
-      stam: ''
+
     }
   }
 
   static propTypes = {
     designatedFloor: PropTypes.number.isRequired,
-    direction: PropTypes.number.isRequired,
+    elevatorId: PropTypes.number.isRequired,
   };
 
   componentDidMount() {
@@ -43,23 +44,26 @@ class Elevator extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
 
-    const { designatedFloor } = nextProps;
-    const { currentFloor, designatedFloor: stateDesignatedFloor } = prevState;
+    console.log('nextProps =',nextProps);
+    const { designatedFloor: propDesignatedFloor, elevatorId: propsId } = nextProps;
+    const { currentFloor, designatedFloor: stateDesignatedFloor, id: stateId } = prevState;
 
-    if (designatedFloor === stateDesignatedFloor) {
-      return;
+    if (propsId !== stateId || propDesignatedFloor === stateDesignatedFloor) {
+      return prevState;
     }
+
+    // debugger;
 
     let newState = {
       direction: 1,
-      designatedFloor: designatedFloor
+      designatedFloor: propDesignatedFloor
     };
 
-    if (currentFloor < designatedFloor) {
+    if (currentFloor < propDesignatedFloor) {
       newState = Object.assign({}, newState, { direction: 1 });
     }
     else {
-      if (currentFloor === designatedFloor) {
+      if (currentFloor === propDesignatedFloor) {
         newState = Object.assign({}, newState, { direction: 0 });
       }
       else {
@@ -68,6 +72,7 @@ class Elevator extends Component {
     }
 
     var result = Object.assign({}, prevState, newState);
+
     return result;
   }
 
@@ -113,16 +118,19 @@ class Elevator extends Component {
         <div >
           <h1>{this.state.top} </h1>
         </div >
-        {/* {this.props.elevatorVisibility && <div style={{ ...mystyle }}></div>} */}
-        {/* {this.props.elevatorVisibility && <div style={{ ...elevatorBody }}></div>} */}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  designatedFloor: state.elevetorReducer.floorInstruction.designatedFloor,
-  direction: state.elevetorReducer.floorInstruction.direction
+  elevatorId: state.elevetorReducer.elevatorInstruction.elevatorId,
+  designatedFloor: state.elevetorReducer.elevatorInstruction.designatedFloor,
+  // designatedFloor: state.elevetorReducer.elevatorInstruction,
+  // currentFloor: state.elevetorReducer.elevatorInstruction.currentFloor,
+  // direction: state.elevetorReducer.elevatorInstruction.direction
+  // designatedFloor: state.elevetorReducer.elevatorInstruction.designatedFloor,
+  // direction: state.elevetorReducer.elevatorInstruction.direction
 });
 
 export default connect(mapStateToProps, {})(Elevator);

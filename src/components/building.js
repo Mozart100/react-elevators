@@ -3,12 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Elevator from './elevator';
 import Floors from './floors';
+import { initializeElevators } from '../action/elevatorAction';
 
 
-// const buildingStyle = {
-//   background: '#eee',
-//   height: '500px',
-// };
 
 const commonStyle =
 {
@@ -38,9 +35,24 @@ const floorsStyle = {
 
 class Building extends Component {
 
-  // componentWillMount() {
-  //   this.props.fetchPosts();
-  // }
+  constructor(props) {
+    super(props);
+
+    let elevators = [];
+
+    for (let i = 0; i < 1; i++) {
+      elevators.push(i + 1);
+    }
+
+    this.state = {
+      elevators
+    };
+
+  }
+
+  componentDidMount() {
+    this.props.initializeElevators(this.props.amountOfElevators,this.props.amountOfFloors);
+  }
 
   // componentWillReceiveProps(nextProps) {
 
@@ -50,6 +62,8 @@ class Building extends Component {
 
   render() {
 
+
+    console.log('this.state.elevators', this.state.elevators);
     return (
       <div >
         <div >
@@ -58,8 +72,11 @@ class Building extends Component {
           </div>
 
           <div style={{ ...elevatorStyle }}>
-            <Elevator />
+            <span >
+              {this.state.elevators.map(e => <Elevator key={e} componentId={e}/>)}
+            </span>
           </div>
+
         </div>
       </div >
     );
@@ -77,7 +94,7 @@ const mapStateToProps = state => ({
   // newPost: state.posts.item,
 });
 
-export default connect(mapStateToProps, {})(Building);
+export default connect(mapStateToProps, { initializeElevators })(Building);
 // export default connect(mapStateToProps, { fetchPosts })(Building);
 
 
