@@ -10,19 +10,6 @@ import Floor  from './floor';
 
 
 const contentStyle = {
-  // display:flex
-  // background: 'green',
-  // position: 'absolute',
-
-  // width: 80,
-  // height: 500,
-  // width: 150,
-  // float: 'left'
-  // float:left
-  // float:'right'
-  // margin: 'auto'
-
-
 };
 
 
@@ -33,7 +20,7 @@ class Floors extends Component {
 
     // UniquId.enableUniqueIds(this);
     const floors = [];
-    for (let i = 10; i > 0; i--)
+    for (let i = props.amountOfFloors; i > 0; i--)
       floors.push(i);
 
     this.state = {
@@ -42,15 +29,6 @@ class Floors extends Component {
     };
   }
 
-  // componentWillMount() {
-  //   const floors = [];//Array(this.props.amountOfFloors);
-  //   for (let i = 0; i < 10; i++)
-  //     // for (let i = 0; i < this.props.amountOfFloors; i++)
-  //     floors.push(i);
-  //   // this.state.floors.push(i);
-
-  //   this.setState({ floors });
-  // }
 
   elevatorRequested= (e)=> {
   //  console.log('button Id', e.target.value);
@@ -64,8 +42,7 @@ class Floors extends Component {
       <div style={{ ...contentStyle }}>
         
         <ul>
-          {this.state.floors.map((elevator,index) => <Floor key={index} id={elevator} clicked={this.elevatorRequested.bind(elevator)}/> )}
-          {/* {this.state.floors.map((elevator) => <li key={elevator} style={{...buttonContentStyle}}><button type="button"  > {elevator} </button></li> )} */}
+          {this.state.floors.map((floor,index) => <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
         </ul>
       </div >
     );

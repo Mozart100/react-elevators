@@ -10,7 +10,13 @@ const initialState = {
   },
   elevators: [],
   amountOfFloors: 0,
-  requestedElevatorQueue: []
+  requestedElevatorQueue: [],
+  floorNotified:  {
+    designatedFloorId: 0,
+    elevatorLocationFloor: 0,
+    elevatorId: 0,
+
+  }
 };
 
 
@@ -47,22 +53,21 @@ export default function (state = initialState, action) {
 
     case Elevator_Changed_Floor:
 
-
       const elevator = newState.elevators[payload.elevatorId - 1];
       elevator.currentFloor = payload.currentFloor;
       elevator.direction = payload.direction;
       elevator.designatedFloor = payload.designatedFloor;
 
-      let result = newState;
+      let returnedState = newState;
       if (payload.designatedFloor === payload.currentFloor) // reached desitinatio which mean it ready to work
       {
-        // console.log('Elevator_Changed_Floor Reached Destination', payload);
-
-        const destinationFloor = result.requestedElevatorQueue.shift();
-        console.log('shift destinationFloor=',destinationFloor);
-        result = locatingSuitableElevator(newState, destinationFloor);
+        const destinationFloor = returnedState.requestedElevatorQueue.shift();
+        returnedState = locatingSuitableElevator(newState, destinationFloor);
       }
-      return result;
+      
+      returnedState.floorNotified.designatedFloorId = elevator.designatedFloor;
+      returnedState.floorNotified.elevatorLocationFloor = elevator.currentFloor;
+      return returnedState;
 
     default:
       return state;

@@ -16,26 +16,17 @@ class App extends Component {
             <h1 className="App-title">Welcome to React</h1>
           </header>
 
-         <Building amountOfFloors={10}  amountOfElevators={4} />
+         <Building amountOfFloors={10}  amountOfElevators={5} />
 
-          {/* <Postform />
-          <Posts /> */}
-          {/* <Elevator/> */}
-
-          {/* <p className="App-intro">
-        Anatoliy
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p> */}
         </div>
-      // </Provider>
 
     );
   }
 }
 
-const mapStateToProps = state => ({
-  posts: state.posts.items,
-  newPost: state.posts.item,
-});
+// const mapStateToProps = state => ({
+//   posts: state.posts.items,
+//   newPost: state.posts.item,
+// });
 
 export default App;
