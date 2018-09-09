@@ -61,7 +61,7 @@ class Elevator extends Component {
         direction = -1;
       };
     }
-    console.log('Request From Elevator to get to =', propDesignatedFloor);
+    // console.log('Request From Elevator to get to =', propDesignatedFloor);
     return Object.assign({}, prevState, { designatedFloor: propDesignatedFloor, direction });
   }
 
@@ -81,44 +81,30 @@ class Elevator extends Component {
     }
 
     if (currentFloor === designatedFloor) {
-    // if (currentFloor === designatedFloor && direction !== 0) {
+      // if (currentFloor === designatedFloor && direction !== 0) {
       this.setState({ direction: 0, delay: 100 }) // 2 seconds beacuse each and every 10 ms it is invoked!
       this.props.elevatorFloorChanged(elevatorId, designatedFloor, 0, designatedFloor);
       return;
     }
 
-    let toIncrement = this.calculateCurrentFloorByPosition(top);
+    let newCurrentFloor = this.calculateCurrentFloorByPosition(top);
 
-    if (Math.floor(toIncrement) === toIncrement && toIncrement !== currentFloor) {
-      // console.log('designatedFloor',designatedFloor);
-      this.props.elevatorFloorChanged(elevatorId, toIncrement, direction, designatedFloor);
-      // console.log('xxxxxdesignatedFloor',designatedFloor);
-
+    //refactoring requires!
+    if (Math.floor(newCurrentFloor) === newCurrentFloor && newCurrentFloor !== currentFloor && newCurrentFloor !== designatedFloor) {
+      this.props.elevatorFloorChanged(elevatorId, newCurrentFloor, direction, designatedFloor);
     }
 
     if (direction === 1)
       this.setState({
         top: top - 1,
-        currentFloor: toIncrement
+        currentFloor: newCurrentFloor
       })
     else
       if (direction === -1)
         this.setState({
           top: top + 1,
-          currentFloor: toIncrement
+          currentFloor: newCurrentFloor
         })
-
-
-
-    // if (currentFloor === designatedFloor) {
-    //   this.setState({ direction: 0, delay: 100 }) // 2 seconds beacuse each and every 10 ms it is invoked!
-    //   return;
-    // }
-
-    // if (Math.floor(toIncrement) === toIncrement && toIncrement !== currentFloor) {
-    //   this.props.elevatorFloorChanged(elevatorId, toIncrement, direction, designatedFloor);
-
-    // }
 
   }
 

@@ -41,7 +41,7 @@ export default function (state = initialState, action) {
 
     case Designated_Floor_Number_Requested:
 
-      console.log('Designated_Floor_Number_Requested');
+      // console.log('Designated_Floor_Number_Requested');
       let item = locatingSuitableElevator(newState, payload);
       return item;
 
@@ -56,9 +56,10 @@ export default function (state = initialState, action) {
       let result = newState;
       if (payload.designatedFloor === payload.currentFloor) // reached desitinatio which mean it ready to work
       {
-        console.log('Elevator_Changed_Floor Reached Destination', payload);
+        // console.log('Elevator_Changed_Floor Reached Destination', payload);
 
         const destinationFloor = result.requestedElevatorQueue.shift();
+        console.log('shift destinationFloor=',destinationFloor);
         result = locatingSuitableElevator(newState, destinationFloor);
       }
       return result;
@@ -77,10 +78,13 @@ function locatingSuitableElevator(newState, payload) {
   const elev = findNeededElevator(newState.elevators, requestedFloorNumber, newState.amountOfFloors);
 
   if (elev === null) {
+    console.log('elev = null and requestedFloorNumber=', requestedFloorNumber);
     newState.requestedElevatorQueue.push(requestedFloorNumber);
   }
   else {
     if (elev.direction !== 0) {
+      console.log('elev.direction !== 0 and elev.designatedFloor=', elev.designatedFloor);
+
       newState.requestedElevatorQueue.push(elev.designatedFloor)
     }
     elev.designatedFloor = requestedFloorNumber;
@@ -138,13 +142,14 @@ function findAllElevetorsSuitableToRequestFloor(elevators, requestedFloor) {
 
     //checking whether elevator heading in the right direction.
     if (elev.currentFloor < requestedFloor && elev.direction === 1)
-      // if (elev.designatedFloor < requestedFloor )
-      // {
-      elevs.push(elev);
-    // }
-    else
-      if (elev.currentFloor > requestedFloor && elev.direction === 0)
+      if (elev.designatedFloor > requestedFloor) {
         elevs.push(elev);
+      }
+      else
+        if (elev.currentFloor > requestedFloor && elev.direction === -1)
+          if (elev.designatedFloor < requestedFloor) {
+            elevs.push(elev);
+          }
   }
   return elevs;
 }

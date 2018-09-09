@@ -53,7 +53,7 @@ class Floors extends Component {
   // }
 
   elevatorRequested= (e)=> {
-   console.log('button Id', e.target.value);
+  //  console.log('button Id', e.target.value);
     // this.props.requestedElevator(e.target.value + '');
     this.props.requestedElevator(parseInt(e.target.value));
   }

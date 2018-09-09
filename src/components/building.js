@@ -46,7 +46,7 @@ class Building extends Component {
 
     let elevators = [];
 
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < props.amountOfElevators; i++) {
       elevators.push(i + 1);
     }
 
@@ -60,15 +60,8 @@ class Building extends Component {
     this.props.initializeElevators(this.props.amountOfElevators,this.props.amountOfFloors);
   }
 
-  // componentWillReceiveProps(nextProps) {
-
-  //   if (nextProps.newPost)
-  //     nextProps.posts.unshift(nextProps.newPost);
-  // }
-
   render() {
 
-    console.log('this.state.elevators', this.state.elevators);
     return (
       <div >
         <div >
@@ -76,12 +69,8 @@ class Building extends Component {
             <Floors amountOfFloors={this.props.amountOfFloors} />
           </div>
 
-          <div style={{ ...elevatorStyle }}>
-              {this.state.elevators.map(e => <Elevator key={e} componentId={e}/>)}
-            {/* <span >
-            </span> */}
-          </div>
 
+          {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle }}><Elevator  componentId={e}/></div>)}
         </div>
       </div >
     );

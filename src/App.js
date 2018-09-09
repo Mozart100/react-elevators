@@ -16,7 +16,7 @@ class App extends Component {
             <h1 className="App-title">Welcome to React</h1>
           </header>
 
-         <Building amountOfFloors={10}  amountOfElevators={1} />
+         <Building amountOfFloors={10}  amountOfElevators={4} />
 
           {/* <Postform />
           <Posts /> */}
