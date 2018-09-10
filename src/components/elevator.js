@@ -27,7 +27,9 @@ class Elevator extends Component {
       designatedFloor: 1,
       direction: 0,   //-1 0 1 
       top: 0,
-      delay: -1
+      delay: -1,
+      amountOfFloors : this.props.amountOfFloors
+
     }
   }
 
@@ -109,11 +111,14 @@ class Elevator extends Component {
   }
 
   calculateCurrentFloorByPosition(position) {
-    return 10 - (position / 50)
+    return this.state.amountOfFloors - (position / 50)
+    // return 10 - (position / 50)
   }
 
   calculatePositionOfTheFloor(floor) {
-    return 500 - ((floor * 50) + 50);
+    const height = (this.state.amountOfFloors * 50) ;
+    return height - ((floor * 50) + 50);
+    // return 500 - ((floor * 50) + 50);
   }
 
   render() {

@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { elevatorLaunch } from '../component/../action/elevatorAction';
 import {requestedElevator} from '../action/elevatorAction'
 import Floor  from './floor';
 // import UniquId  from 'react-html-id';
-
-
-
-
-const contentStyle = {
-};
-
 
 class Floors extends Component {
 
@@ -29,28 +21,28 @@ class Floors extends Component {
     };
   }
 
+  static PropTypes = {
+    amountOfFloors: PropTypes.number.isRequired
+  }
 
   elevatorRequested= (e)=> {
-  //  console.log('button Id', e.target.value);
-    // this.props.requestedElevator(e.target.value + '');
     this.props.requestedElevator(parseInt(e.target.value));
   }
 
 
   render() {
     return (
-      <div style={{ ...contentStyle }}>
-        
+      <div>
         <ul>
-          {this.state.floors.map((floor,index) => <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
+          {this.state.floors.map(floor => <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
         </ul>
       </div >
     );
   }
 }
-Floors.propTypes = {
-  amountOfFloors: PropTypes.number.isRequired,
-};
+// Floors.propTypes = {
+//   amountOfFloors: PropTypes.number.isRequired,
+// };
 
 
 // const mapStateToProps = state => ({

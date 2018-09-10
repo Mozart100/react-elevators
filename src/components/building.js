@@ -7,36 +7,27 @@ import { initializeElevators } from '../action/elevatorAction';
 
 
 
-const commonStyle =
-{
-  height: 500,
-
-}
+// const commonStyle =
+// {
+//   height: 500,
+// }
 
 
 
 const floorsStyle = {
   background: 'green',
   width: 80,
-  ...commonStyle,
-  // height:500,
+  // ...commonStyle,
   width: 150,
   float: 'left'
-  // float:left
-  // float:'right'
-  // margin: 'auto'
 };
 
 
 const elevatorStyle = {
   background: '#eee',
-  ...commonStyle,
-
-  // height:500,
-  // width: '100%',
+  // ...commonStyle,
   width: '100px',
   float: 'left'
-
 }
 
 class Building extends Component {
@@ -57,20 +48,23 @@ class Building extends Component {
   }
 
   componentDidMount() {
-    this.props.initializeElevators(this.props.amountOfElevators,this.props.amountOfFloors);
+    this.props.initializeElevators(this.props.amountOfElevators, this.props.amountOfFloors);
   }
 
   render() {
 
+    const { amountOfFloors } = this.props;
+    const height = amountOfFloors * 50;
+
     return (
       <div >
         <div >
-          <div style={{ ...floorsStyle }}>
-            <Floors amountOfFloors={this.props.amountOfFloors} />
+          <div style={{ ...floorsStyle, height }}>
+            <Floors amountOfFloors={amountOfFloors} />
           </div>
 
 
-          {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle }}><Elevator  componentId={e}/></div>)}
+          {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} amountOfFloors={amountOfFloors}/></div>)}
         </div>
       </div >
     );
