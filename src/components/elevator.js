@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import elevatorImage from './Images/elv.png';
 import { elevatorFloorChanged } from '../action/elevatorAction'
 
 
 
 const bodyStyle = {
-  background: 'red',
   width: 50,
-  height: 50,
-  
-  // float:'right',
   margin: '0 auto',
   position: 'relative',
-  // top: 0
 };
 
 
@@ -124,14 +120,10 @@ class Elevator extends Component {
   }
 
   render() {
-    let { top, componentHeight:height } = this.state;
+    const { top, componentHeight:height } = this.state;
     const mystyle = { ...bodyStyle, top,height };
     return (
-      <div style={{ ...mystyle }}>
-        <div >
-          <div>{this.state.top} </div>
-        </div >
-      </div>
+      <img src={elevatorImage} style={{ ...mystyle }}/>
     );
   }
 }
