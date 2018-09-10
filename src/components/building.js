@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Elevator from './elevator';
 import Floors from './floors';
 import { initializeElevators } from '../action/elevatorAction';
-
-
-
-// const commonStyle =
-// {
-//   height: 500,
-// }
-
 
 
 const floorsStyle = {
@@ -25,7 +17,6 @@ const floorsStyle = {
 
 const elevatorStyle = {
   background: '#eee',
-  // ...commonStyle,
   width: '100px',
   float: 'left'
 }
@@ -42,10 +33,15 @@ class Building extends Component {
     }
 
     this.state = {
-      elevators
+      elevators,
+      componentHeight: this.props.componentHeight
     };
 
   }
+
+  static propTypes = {
+    componentHeight: PropTypes.number.isRequired,
+  };
 
   componentDidMount() {
     this.props.initializeElevators(this.props.amountOfElevators, this.props.amountOfFloors);
@@ -54,28 +50,22 @@ class Building extends Component {
   render() {
 
     const { amountOfFloors } = this.props;
-    const height = amountOfFloors * 50;
+    const { componentHeight } = this.state;
+    const height = amountOfFloors * componentHeight;
 
     return (
       <div >
         <div >
           <div style={{ ...floorsStyle, height }}>
-            <Floors amountOfFloors={amountOfFloors} />
+            <Floors amountOfFloors={amountOfFloors} componentHeight={componentHeight}/>
           </div>
 
-
-          {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} amountOfFloors={amountOfFloors}/></div>)}
+          {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></div>)}
         </div>
       </div >
     );
   }
 }
-
-// Posts.propTypes = {
-//   fetchPosts: PropTypes.func.isRequired,
-//   posts: PropTypes.array.isRequired,
-//   newPost: PropTypes.object
-// };
 
 const mapStateToProps = state => ({
   // posts: state.posts.items,

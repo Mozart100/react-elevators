@@ -9,6 +9,7 @@ const bodyStyle = {
   background: 'red',
   width: 50,
   height: 50,
+  
   // float:'right',
   margin: '0 auto',
   position: 'relative',
@@ -28,7 +29,8 @@ class Elevator extends Component {
       direction: 0,   //-1 0 1 
       top: 0,
       delay: -1,
-      amountOfFloors : this.props.amountOfFloors
+      amountOfFloors : this.props.amountOfFloors,
+      componentHeight : this.props.componentHeight
 
     }
   }
@@ -111,19 +113,19 @@ class Elevator extends Component {
   }
 
   calculateCurrentFloorByPosition(position) {
-    return this.state.amountOfFloors - (position / 50)
+    return this.state.amountOfFloors - (position / this.state.componentHeight)
     // return 10 - (position / 50)
   }
 
   calculatePositionOfTheFloor(floor) {
-    const height = (this.state.amountOfFloors * 50) ;
-    return height - ((floor * 50) + 50);
+    const height = (this.state.amountOfFloors * this.state.componentHeight) ;
+    return height - ((floor * this.state.componentHeight) + this.state.componentHeight);
     // return 500 - ((floor * 50) + 50);
   }
 
   render() {
-    let { top } = this.state;
-    const mystyle = { ...bodyStyle, top };
+    let { top, componentHeight:height } = this.state;
+    const mystyle = { ...bodyStyle, top,height };
     return (
       <div style={{ ...mystyle }}>
         <div >

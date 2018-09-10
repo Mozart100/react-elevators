@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import Building from './components/building' 
+import Building from './components/building'
 
 class App extends Component {
   render() {
     return (
       // <Provider store={store}>
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Welcome to React</h1>
+        </header>
 
-         <Building amountOfFloors={10}  amountOfElevators={4} />
+        <Building amountOfFloors={10} amountOfElevators={4} componentHeight={50} />
 
-        </div>
+      </div>
 
     );
   }

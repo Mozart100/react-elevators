@@ -17,7 +17,8 @@ class Floors extends Component {
 
     this.state = {
       visibility: true,
-      floors: floors
+      floors: floors,
+      componentHeight :this.props.componentHeight
     };
   }
 
@@ -34,24 +35,14 @@ class Floors extends Component {
     return (
       <div>
         <ul>
-          {this.state.floors.map(floor => <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
+          {this.state.floors.map(floor => 
+          <Floor key={floor} componentHeight={this.state.componentHeight} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
         </ul>
       </div >
     );
   }
 }
-// Floors.propTypes = {
-//   amountOfFloors: PropTypes.number.isRequired,
-// };
-
-
-// const mapStateToProps = state => ({
-
-//   // posts: state.posts.items,
-//   // newPost: state.posts.item,
-// });
 
 export default connect(null, { requestedElevator })(Floors);
-// export default connect(mapStateToProps, { fetchPosts })(Building);
 
 
