@@ -67,6 +67,7 @@ export default function (state = initialState, action) {
       
       returnedState.floorNotified.designatedFloorId = elevator.designatedFloor;
       returnedState.floorNotified.elevatorLocationFloor = elevator.currentFloor;
+      returnedState.floorNotified.elevatorId = elevator.elevatorId;
       return returnedState;
 
     default:

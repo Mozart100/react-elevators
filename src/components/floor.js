@@ -32,7 +32,6 @@ class Floor extends Component {
     let newState = Object.assign({}, prevState);
     const { FloorComponentId, elevatorLocationFloor, elevatorId } = nextProps;
     if (prevState.componentId === FloorComponentId) {
-      console.log('Good floor props', nextProps);
       newState = Object.assign(newState, { elevatorLocationFloor: elevatorLocationFloor, elevatorId });
     }
     else {

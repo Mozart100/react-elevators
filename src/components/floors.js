@@ -21,7 +21,7 @@ class Floors extends Component {
     };
   }
 
-  static PropTypes = {
+  static propTypes = {
     amountOfFloors: PropTypes.number.isRequired
   }
 
