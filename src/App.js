@@ -11,7 +11,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Elevator HW</h1>
         </header>
 
         <Building amountOfFloors={10} amountOfElevators={4} componentHeight={50} />
