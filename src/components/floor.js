@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 
 
 const buttonContentStyle = {
-  // height: '50px',
   width: '50px',
-  padding: '0px'
 }
 
 class Floor extends Component {
@@ -46,10 +44,11 @@ class Floor extends Component {
   render() {
     const { elevatorLocationFloor, componentHeight: height } = this.state;
     return (
-      <li style={{ ...buttonContentStyle,height }}>
+      <li style={{height }}>
+      {/* <li style={{ ...buttonContentStyle,height }}> */}
         <span>
           {elevatorLocationFloor > 0 && elevatorLocationFloor}
-          <button type="button" onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
+          <button type="button" style={{...buttonContentStyle}} onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
         </span>
       </li>)
   }

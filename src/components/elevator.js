@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import elevatorImage from './Images/elv.png';
 import { elevatorFloorChanged } from '../action/elevatorAction'
+import soundFile from '../components/Audio/ding.mp3'
+
 
 
 
@@ -18,6 +20,8 @@ class Elevator extends Component {
   constructor(props) {
     super(props);
 
+    // this.sound = new Audio(soundFile);
+
     this.state = {
       id: this.props.componentId,
       currentFloor: 1,
@@ -25,8 +29,8 @@ class Elevator extends Component {
       direction: 0,   //-1 0 1 
       top: 0,
       delay: -1,
-      amountOfFloors : this.props.amountOfFloors,
-      componentHeight : this.props.componentHeight
+      amountOfFloors: this.props.amountOfFloors,
+      componentHeight: this.props.componentHeight
 
     }
   }
@@ -66,7 +70,11 @@ class Elevator extends Component {
   }
 
 
+  runAudio = () => {
 
+    const sound = new Audio(soundFile);
+    sound.play();
+  }
 
   TimerAction() {
     const { currentFloor, designatedFloor, top, direction, delay, id: elevatorId } = this.state;
@@ -81,6 +89,7 @@ class Elevator extends Component {
     }
 
     if (currentFloor === designatedFloor) {
+      this.runAudio();
       // if (currentFloor === designatedFloor && direction !== 0) {
       this.setState({ direction: 0, delay: 100 }) // 2 seconds beacuse each and every 10 ms it is invoked!
       this.props.elevatorFloorChanged(elevatorId, designatedFloor, 0, designatedFloor);
@@ -114,16 +123,16 @@ class Elevator extends Component {
   }
 
   calculatePositionOfTheFloor(floor) {
-    const height = (this.state.amountOfFloors * this.state.componentHeight) ;
+    const height = (this.state.amountOfFloors * this.state.componentHeight);
     return height - ((floor * this.state.componentHeight) + this.state.componentHeight);
     // return 500 - ((floor * 50) + 50);
   }
 
   render() {
-    const { top, componentHeight:height } = this.state;
-    const mystyle = { ...bodyStyle, top,height };
+    const { top, componentHeight: height } = this.state;
+    const mystyle = { ...bodyStyle, top, height };
     return (
-      <img src={elevatorImage} style={{ ...mystyle }}/>
+      <img src={elevatorImage} style={{ ...mystyle }} />
     );
   }
 }
