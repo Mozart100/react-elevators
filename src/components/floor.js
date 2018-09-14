@@ -45,7 +45,7 @@ class Floor extends Component {
     const { elevatorLocationFloor, componentHeight: height } = this.state;
     return (
       <div>
-        {elevatorLocationFloor > 0 && elevatorLocationFloor}
+        {elevatorLocationFloor > 0 && "("+elevatorLocationFloor+") "}
         <button onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
       </div>
     )
