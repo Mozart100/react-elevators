@@ -4,8 +4,19 @@ import PropTypes from 'prop-types';
 import elevatorImage from './Images/elv.png';
 import { elevatorFloorChanged } from '../action/elevatorAction'
 import soundFile from '../components/Audio/ding.mp3'
+import styled from 'styled-components';
 import './style/elevator-style.css'
 
+const ImgStyled = styled.img`
+  background-image:url(${elevatorImage});
+  width: 50px;
+  margin: 0 auto;
+  position: relative;
+  box-sizing:border-box;
+  text-align:center;
+  left:25%;
+  /* top:${props => props.top + 'px'}; */
+`;
 
 class Elevator extends Component {
 
@@ -121,10 +132,11 @@ class Elevator extends Component {
 
   render() {
     const { top } = this.state;
-    // const mystyle = { ...bodyStyle, top, height };
+    // style={{top}} --> I did it like this in order to avoid generation of new classes
     return (
-      <img className="elevator" src={elevatorImage}  style={{top}}/>
-      // <img className="elevator" src={elevatorImage} style={{ ...mystyle }} />
+      <ImgStyled src={elevatorImage} style={{ top }}></ImgStyled>
+      // <ImgStyled src={elevatorImage} top={top}></ImgStyled>
+      // <img className="elevator" src={elevatorImage}  style={{top}}/>
     );
   }
 }
@@ -132,6 +144,6 @@ class Elevator extends Component {
 const mapStateToProps = state => ({
   elevatorId: state.elevetorReducer.elevatorInstruction.elevatorId,
   designatedFloor: state.elevetorReducer.elevatorInstruction.designatedFloor,
-});
+})
 
 export default connect(mapStateToProps, { elevatorFloorChanged })(Elevator);

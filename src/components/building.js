@@ -7,11 +7,6 @@ import Elevators from './elevators';
 import { initializeElevators } from '../action/elevatorAction';
 
 
-// const elevatorStyle = {
-//   background: '#eee',
-//   width: '100px',
-//   float: 'left'
-// }
 
 class Building extends Component {
 
@@ -26,14 +21,10 @@ class Building extends Component {
 
     this.state = {
       elevators,
-      componentHeight: this.props.componentHeight
     };
 
   }
 
-  static propTypes = {
-    componentHeight: PropTypes.number.isRequired,
-  };
 
   componentDidMount() {
     this.props.initializeElevators(this.props.amountOfElevators, this.props.amountOfFloors);
@@ -42,20 +33,12 @@ class Building extends Component {
   render() {
 
     const { amountOfFloors } = this.props;
-    const { componentHeight } = this.state;
-    const height = amountOfFloors * componentHeight;
 
     return (
       <div >
         <Floors amountOfFloors={amountOfFloors} />
 
-        {/* <Elevators /> */}
-        <ul className="elevators">
-          {this.state.elevators.map(e => <li key={e} style={{ height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></li>)}
-          {/* {this.state.elevators.map(e => <li key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></li>)} */}
-        </ul>
-        {/* {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></div>)} */}
-
+        <Elevators elevators={this.state.elevators} amountOfFloors={amountOfFloors}/>
       </div >
     );
   }
