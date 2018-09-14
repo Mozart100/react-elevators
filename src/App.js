@@ -22,9 +22,14 @@ const TitledStyled = styled.h1`
 `;
 
 const ApplogoSpinStyled = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  0% {transform: rotate(0deg);  }
+  100% {transform: rotate(360deg);  }
 `;
+// const ApplogoSpinStyled = keyframes`
+
+//   from { transform: rotate(0deg); }
+//   to { transform: rotate(360deg); }
+// `;
 
 const LogoStyled = styled.img`
   animation: ApplogoSpinStyled infinite 20s linear;
