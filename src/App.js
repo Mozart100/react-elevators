@@ -1,22 +1,51 @@
 import React, { Component } from 'react';
+import styled, { keyframes } from 'styled-components';
 import logo from './logo.svg';
-import './App.css';
-
 import Building from './components/building'
+
+const AppStyled = styled.div`
+  width:90%;
+  margin:auto;
+  background-color: #222;
+`;
+
+const AppHeaderStyled = styled.div`
+  height: 150px;
+  padding: 20px;
+  color: white;
+  margin:0 auto;
+  width: 200px;
+`;
+
+const TitledStyled = styled.h1`
+  font-size: 1.5em;
+`;
+
+const ApplogoSpinStyled = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const LogoStyled = styled.img`
+  animation: ApplogoSpinStyled infinite 20s linear;
+  height: 80px;
+  margin:0 auto;
+  width: 150px;
+`;
+
 
 class App extends Component {
   render() {
     return (
-      // <Provider store={store}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Elevator HW</h1>
-        </header>
+      <AppStyled>
+        <AppHeaderStyled >
+          <LogoStyled src={logo} alt="logo" />
+          <TitledStyled >Elevator HW</TitledStyled>
+        </AppHeaderStyled>
 
         <Building amountOfFloors={10} amountOfElevators={1} />
 
-      </div>
+      </AppStyled>
 
     );
   }

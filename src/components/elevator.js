@@ -49,6 +49,10 @@ class Elevator extends Component {
     this.timer = setInterval(() => this.TimerAction(), 10); //0.5 for floor height 50 so 10 [ms]
   }
 
+  componentWillUnmount() {
+
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
 
     const { designatedFloor: propDesignatedFloor, elevatorId: propsId } = nextProps;
