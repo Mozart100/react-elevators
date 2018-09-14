@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Elevator from './elevator';
 import Floors from './floors';
+import Elevator from './elevator';
+import Elevators from './elevators';
 import { initializeElevators } from '../action/elevatorAction';
 
 
-const elevatorStyle = {
-  background: '#eee',
-  width: '100px',
-  float: 'left'
-}
+// const elevatorStyle = {
+//   background: '#eee',
+//   width: '100px',
+//   float: 'left'
+// }
 
 class Building extends Component {
 
@@ -48,7 +49,12 @@ class Building extends Component {
       <div >
         <Floors amountOfFloors={amountOfFloors} />
 
-        {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></div>)}
+        {/* <Elevators /> */}
+        <ul className="elevators">
+          {this.state.elevators.map(e => <li key={e} style={{ height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></li>)}
+          {/* {this.state.elevators.map(e => <li key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></li>)} */}
+        </ul>
+        {/* {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></div>)} */}
 
       </div >
     );

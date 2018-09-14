@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Elevator from './elevator';
+
 
 class Elevators extends Component {
   render() {
     return (
       <ul className="elevators">
-        {this.state.elevators.map(elevator => 
-        <Floor key={elevator} componentHeight={this.state.componentHeight} componentId={elevator} clicked={this.elevatorRequested.bind(elevator)}/> )}
+        {/* {this.state.elevators.map(elevator => 
+        <Elevator key={elevator} componentHeight={this.state.componentHeight} componentId={elevator} clicked={this.elevatorRequested.bind(elevator)}/> )} */}
       </ul>
   );
   }
@@ -16,4 +20,5 @@ const mapStateToProps = state => ({
   // designatedFloor: state.elevetorReducer.elevatorInstruction.designatedFloor,
 });
 
-export default connect(mapStateToProps, { elevatorFloorChanged })(Elevators);
+export default connect(mapStateToProps, {  })(Elevators);
+// export default connect(mapStateToProps, { elevatorFloorChanged })(Elevators);

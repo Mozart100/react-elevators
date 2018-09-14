@@ -4,23 +4,13 @@ import PropTypes from 'prop-types';
 import elevatorImage from './Images/elv.png';
 import { elevatorFloorChanged } from '../action/elevatorAction'
 import soundFile from '../components/Audio/ding.mp3'
-
-
-
-
-const bodyStyle = {
-  width: 50,
-  margin: '0 auto',
-  position: 'relative',
-};
+import './style/elevator-style.css'
 
 
 class Elevator extends Component {
 
   constructor(props) {
     super(props);
-
-    // this.sound = new Audio(soundFile);
 
     this.state = {
       id: this.props.componentId,
@@ -30,7 +20,8 @@ class Elevator extends Component {
       top: 0,
       delay: -1,
       amountOfFloors: this.props.amountOfFloors,
-      componentHeight: this.props.componentHeight
+      componentHeight: 50
+      // componentHeight: this.props.componentHeight
 
     }
   }
@@ -129,10 +120,11 @@ class Elevator extends Component {
   }
 
   render() {
-    const { top, componentHeight: height } = this.state;
-    const mystyle = { ...bodyStyle, top, height };
+    const { top } = this.state;
+    // const mystyle = { ...bodyStyle, top, height };
     return (
-      <img src={elevatorImage} style={{ ...mystyle }} />
+      <img className="elevator" src={elevatorImage}  style={{top}}/>
+      // <img className="elevator" src={elevatorImage} style={{ ...mystyle }} />
     );
   }
 }
