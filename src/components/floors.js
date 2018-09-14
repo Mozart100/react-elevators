@@ -1,10 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {requestedElevator} from '../action/elevatorAction'
-import Floor  from './floor';
+import { requestedElevator } from '../action/elevatorAction'
+import Floor from './floor';
 // import UniquId  from 'react-html-id';
 import './style/floors-style.css'
+import styled from 'styled-components';
+
+const FloorStyled = styled.ul`
+  list-style: none;
+  width: 100px;
+  float: left
+
+  > li {
+    border-bottom:1px solid black;
+    border-left:1px solid black;
+    border-right:1px solid black;
+    background: green;
+    height: 50px;
+    text-align: center;
+
+    > div > button {
+      margin-top:10px;  
+      height: 30px;
+      width: 30px;
+      border-radius: 30px;
+      background-color: lightgreen;
+    }
+  }
+ 
+`;
 
 class Floors extends Component {
 
@@ -26,17 +51,21 @@ class Floors extends Component {
     amountOfFloors: PropTypes.number.isRequired
   }
 
-  elevatorRequested= (e)=> {
+  elevatorRequested = (e) => {
     this.props.requestedElevator(parseInt(e.target.value));
   }
 
 
   render() {
     return (
-        <ul className="floors">
-          {this.state.floors.map(floor => 
-          <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
-        </ul>
+      <FloorStyled >
+        {this.state.floors.map(floor => <li key={floor}> <Floor componentId={floor} clicked={this.elevatorRequested.bind(floor)} /></li>)}
+        {/* {this.state.floors.map(floor => <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)} />)} */}
+      </FloorStyled>
+      // <ul className="floors">
+      //   {this.state.floors.map(floor => <li key={floor}> <Floor componentId={floor} clicked={this.elevatorRequested.bind(floor)} /></li>)}
+      //   {/* {this.state.floors.map(floor => <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)} />)} */}
+      // </ul>
     );
   }
 }

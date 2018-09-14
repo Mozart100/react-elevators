@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import './style/floors-style.css'
 
+// const 
 
 
-
-const buttonContentStyle = {
-  width: '50px',
-}
 
 class Floor extends Component {
 
@@ -18,7 +16,7 @@ class Floor extends Component {
     this.state = {
       componentId: props.componentId,
       elevatorLocationFloor: 0,
-      componentHeight :this.props.componentHeight
+      componentHeight: this.props.componentHeight
     }
   }
 
@@ -46,11 +44,11 @@ class Floor extends Component {
   render() {
     const { elevatorLocationFloor, componentHeight: height } = this.state;
     return (
-      <li style={{height }}>
-          {elevatorLocationFloor > 0 && elevatorLocationFloor}
-          <button onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
-          {/* <button href="#" style={{...buttonContentStyle}} onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button> */}
-      </li>)
+      <div>
+        {elevatorLocationFloor > 0 && elevatorLocationFloor}
+        <button onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
+      </div>
+    )
   }
 }
 
