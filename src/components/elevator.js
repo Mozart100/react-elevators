@@ -50,7 +50,7 @@ class Elevator extends Component {
   }
 
   componentWillUnmount() {
-
+    clearInterval(this.timer);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
