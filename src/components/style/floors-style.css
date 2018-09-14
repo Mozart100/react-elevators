@@ -1,0 +1,29 @@
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+
+ul.floors {
+  list-style: none;
+  width: 100px;
+  float: left
+}
+
+ul.floors li{
+  border-bottom:1px solid black;
+  border-left:1px solid black;
+  border-right:1px solid black;
+  background: green;
+  height: 50px;
+  text-align: center;
+}
+
+ul.floors li button {
+  margin-top:10px;  
+  height: 30px;
+  width: 30px;
+  border-radius: 30px;
+  background-color: lightgreen;
+}

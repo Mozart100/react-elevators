@@ -72,8 +72,8 @@ class Elevator extends Component {
 
   runAudio = () => {
 
-    const sound = new Audio(soundFile);
-    sound.play();
+    // const sound = new Audio(soundFile);
+    // sound.play();
   }
 
   TimerAction() {

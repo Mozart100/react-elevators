@@ -6,15 +6,6 @@ import Floors from './floors';
 import { initializeElevators } from '../action/elevatorAction';
 
 
-const floorsStyle = {
-  background: 'green',
-  width: 80,
-  // ...commonStyle,
-  width: 150,
-  float: 'left'
-};
-
-
 const elevatorStyle = {
   background: '#eee',
   width: '100px',
@@ -55,13 +46,10 @@ class Building extends Component {
 
     return (
       <div >
-        <div >
-          <div style={{ ...floorsStyle, height }}>
-            <Floors amountOfFloors={amountOfFloors} componentHeight={componentHeight}/>
-          </div>
+        <Floors amountOfFloors={amountOfFloors} />
 
-          {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></div>)}
-        </div>
+        {this.state.elevators.map(e => <div key={e} style={{ ...elevatorStyle, height }}><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></div>)}
+
       </div >
     );
   }
@@ -73,6 +61,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { initializeElevators })(Building);
-// export default connect(mapStateToProps, { fetchPosts })(Building);
 
 

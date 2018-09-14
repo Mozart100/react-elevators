@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {requestedElevator} from '../action/elevatorAction'
 import Floor  from './floor';
 // import UniquId  from 'react-html-id';
+import './style/floors-style.css'
 
 class Floors extends Component {
 
@@ -18,7 +19,6 @@ class Floors extends Component {
     this.state = {
       visibility: true,
       floors: floors,
-      componentHeight :this.props.componentHeight
     };
   }
 
@@ -33,12 +33,10 @@ class Floors extends Component {
 
   render() {
     return (
-      <div>
-        <ul>
+        <ul className="floors">
           {this.state.floors.map(floor => 
-          <Floor key={floor} componentHeight={this.state.componentHeight} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
+          <Floor key={floor} componentId={floor} clicked={this.elevatorRequested.bind(floor)}/> )}
         </ul>
-      </div >
     );
   }
 }

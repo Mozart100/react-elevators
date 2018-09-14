@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import './style/floors-style.css'
+
 
 
 
@@ -45,11 +47,9 @@ class Floor extends Component {
     const { elevatorLocationFloor, componentHeight: height } = this.state;
     return (
       <li style={{height }}>
-      {/* <li style={{ ...buttonContentStyle,height }}> */}
-        <span>
           {elevatorLocationFloor > 0 && elevatorLocationFloor}
-          <button type="button" style={{...buttonContentStyle}} onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
-        </span>
+          <button onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
+          {/* <button href="#" style={{...buttonContentStyle}} onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button> */}
       </li>)
   }
 }
