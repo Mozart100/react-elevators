@@ -10,10 +10,7 @@ import styled, { keyframes } from 'styled-components';
 import './style/elevator-style.css'
 
 
-// const ElevatorMoverStyled = (from, to) => keyframes`
-//    from { top:${from}px }
-//    to { top:${to}px }
-// `;
+
 const ElevatorMoverStyled = (from, to) => keyframes`
    0% { top:${from}px; }
    100% { top:${to}px }
@@ -24,7 +21,7 @@ const ImgStyled = styled.img`
   width: 50px;
   margin: 0 auto;
   position: relative;
-  box-sizing:border-box;
+  /* box-sizing:border-box; */
   text-align:center;
   left:25%;
   animation: ${props => ElevatorMoverStyled(props.currentTop, props.designatedTop)} ${props => props.animationTime}s linear;
@@ -104,12 +101,12 @@ class Elevator2 extends Component {
 
             let direction = numberFloorPressed - currentFloor; //up or down
 
-            if (direction !== 0) {
-                direction = numberFloorPressed > currentFloor ? 1 : -1;
-            }
-            else
+            if (direction === 0)
             {
                 this.runAudio();
+            }
+            else{
+                direction = numberFloorPressed > currentFloor ? 1 : -1;
             }
 
 
