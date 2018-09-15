@@ -104,9 +104,8 @@ class Elevator2 extends Component {
 
 
     runAudio = () => {
-
-        // const sound = new Audio(soundFile);
-        // sound.play();
+        const sound = new Audio(soundFile);
+        sound.play();
     }
 
     componentDidMount = () => {
@@ -144,16 +143,14 @@ class Elevator2 extends Component {
             if (isTimeout) {
                 console.log('isTimeout!!!!!!!!!!!!!!!!!!');
                 console.log('steps', steps);
+                this.runAudio();
                 this.setState({ currentTop: designatedTop, steps: steps - 1 })
                 this.props.elevatorFloorChanged(elevatorId, currentFloor, 0, numberFloorPressed);
 
             }
             else{
-
-                
-                
                 if (direction === 0) {
-                    this.runAudio();
+                    // this.runAudio();
                     console.log('direction =================0');
                     
                 }
