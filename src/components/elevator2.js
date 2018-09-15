@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import elevatorImage from './Images/elv.png';
@@ -14,8 +15,7 @@ import './style/elevator-style.css'
 //    to { top:${to}px }
 // `;
 const ElevatorMoverStyled = (from, to) => keyframes`
-   0% { top:${from}px }
-    /* 99% { top:${to}px }  */
+   0% { top:${from}px; }
    100% { top:${to}px }
 `;
 
@@ -28,40 +28,28 @@ const ImgStyled = styled.img`
   text-align:center;
   left:25%;
   animation: ${props => ElevatorMoverStyled(props.currentTop, props.designatedTop)} ${props => props.animationTime}s linear;
-  /* animation: ${props => ElevatorMoverStyled(props.currentTop, props.designatedTop)} 2s linear; */
   animation-fill-mode:forwards;
-  /* animation: ${props => ElevatorMoverStyled(props.currentTop, props.designatedTop)} infinite 5s linear; */
+  animation-iteration-count:1;
 `;
-/* animation: ${ElevatorMoverStyled}  ${props.animationTimeInSeconds}s linear; */
-/* top:${props => props.top + 'px'}; */
 
 
 class Elevator2 extends Component {
 
-    // static  amountFloors = this.props.amountFloors;
-
     constructor(props) {
         super(props);
 
-        this.amountFloors = this.props.amountFloors;
-
+        this.elevater_Component_Id = "elevator_Component" + this.props.componentId;
         this.state = {
             elevatorId: this.props.componentId,
             componentHeight: this.props.componentHeight, // floorHeight
             numberFloorPressed: 1,
+            amountOfFloors: this.props.amountOfFloors,
 
             totalHeight: this.props.amountOfFloors * this.props.componentHeight,
-            currentTop: (this.props.amountOfFloors * this.props.componentHeight) - this.props.componentHeight + 2,
+            currentTop: (this.props.amountOfFloors * this.props.componentHeight) - this.props.componentHeight,
             designatedTop: (this.props.amountOfFloors * this.props.componentHeight) - this.props.componentHeight,
 
         }
-
-        // console.log('componentHeight = ',this.props.componentHeight);
-
-        // console.log('currentTop = ', this.state.currentTop)
-        // console.log('amountFloors = ',this.amountFloors);
-        // console.log('currentTop = ',(this.amountOfFloors * this.props.componentHeight));
-        // console.log('designatedTop = ',this.state.designatedTop);
     }
 
     static propTypes = {
@@ -72,36 +60,26 @@ class Elevator2 extends Component {
     componentDidMount() {
     }
 
-    calculateCurrentFloorByPosition(position) {
-        return this.state.amountOfFloors - (position / this.state.componentHeight)
-        // return 10 - (position / 50)
-    }
-
-    calculatePositionOfTheFloor(floor) {
-        const height = (this.amountOfFloors * this.state.componentHeight);
-        return height - ((floor * this.state.componentHeight) + this.state.componentHeight);
-        // return 500 - ((floor * 50) + 50);
-    }
-
-    calculatePositionByFloor(floorNumber, componentHeight) {
-        return floorNumber * componentHeight;
-    }
-
     static getDerivedStateFromProps(nextProps, prevState) {
 
         const { designatedFloor: numberFloorPressed, elevatorId: propsElevatorId } = nextProps;
-        const { elevatorId: stateElevatorId, currentFloor, componentHeight } = prevState;
-
-
+        const { elevatorId: stateElevatorId, componentHeight, currentTop, amountOfFloors } = prevState;
 
         if (propsElevatorId === stateElevatorId) {
+
+            const currentFloor = amountOfFloors - (currentTop / componentHeight);
+
             if (numberFloorPressed !== currentFloor) {
-                // console.log('yyyy',this.amountFloors);
+
+                //refactor
+                let designated = componentHeight;
+                if (currentFloor < numberFloorPressed) {
+                    designated = designated * (-1);
+                }
+
                 return Object.assign({}, prevState, {
                     numberFloorPressed,
-                    // designatedTop:300
-                    designatedTop: (10 - numberFloorPressed) * componentHeight
-                    // designatedFloor: this.calculatePositionByFloor(numberFloorPressed, componentHeight)
+                    designatedTop: currentTop + designated
                 })
             }
         }
@@ -116,61 +94,41 @@ class Elevator2 extends Component {
         // sound.play();
     }
 
-    TimerAction() {
-
-
-    }
-
-    finishedCallback = (position) => {
-        // this.setState((state)=>{})
-        console.log('position=', position);
-    }
-
     componentDidMount = () => {
-        const element = document.getElementById('anatoliy_component');
-        element.addEventListener('animationend', () => {
-            console.log('animation finished');
-            const { currentTop, designatedTop } = this.state;
 
-            if (currentTop !== designatedTop) {
-                this.setState({ currentTop: designatedTop });
+        const element = document.getElementById(this.elevater_Component_Id);
+
+        element.addEventListener('animationend', (e) => {
+            const { designatedTop, componentHeight, numberFloorPressed, elevatorId, amountOfFloors } = this.state;
+            const currentFloor = amountOfFloors - (designatedTop / componentHeight);
+
+            let direction = numberFloorPressed - currentFloor; //up or down
+
+            if (direction !== 0) {
+                direction = numberFloorPressed > currentFloor ? 1 : -1;
             }
-          // Do anything here like remove the node when animation completes or something else!
+            else
+            {
+                this.runAudio();
+            }
+
+
+            this.setState({ currentTop: designatedTop })
+            this.props.elevatorFloorChanged(elevatorId, currentFloor, direction, numberFloorPressed);
+
         });
-      };
+    };
 
     render() {
         const { currentTop, designatedTop } = this.state;
         const animationTime = Math.abs(designatedTop - currentTop) / 50 * 0.5;
-        console.log('currentTop=', currentTop);
-        console.log('designatedTop=', designatedTop);
-        console.log('animationTime=', animationTime);
-        return (
-            // <ImgStyled src={elevatorImage} currentTop={450}
-            //     designatedTop={200} animationTime={2}></ImgStyled>
-
-
-            <ImgStyled src={elevatorImage} currentTop={currentTop} id="anatoliy_component"
-                designatedTop={designatedTop} animationTime={animationTime}></ImgStyled>
-
-
-            // <ImgStyled src={elevatorImage} currentTop={currentTop} designatedTop={this.state.designatedTop}></ImgStyled>
-            // <ImgStyled src={elevatorImage} currentTop={this.state.currentTop} designatedTop={this.state.designatedTop}></ImgStyled>
-        );
-
-    }
-    componentDidUpdate(prevProps, prevState, prevContext) {
-        // console.log('componentDidUpdate(prevProps, prevState, prevContext)')
-
-        const { currentTop, designatedTop } = this.state;
-
-        // if (currentTop !== designatedTop) {
-        //     this.setState({ currentTop: designatedTop });
-        // }
-
         // console.log('currentTop=', currentTop);
         // console.log('designatedTop=', designatedTop);
-        // console.log('componentDidUpdate(prevProps, pr♫evState, prevContext)')
+        // console.log('animationTime=', animationTime);
+        return (
+            <ImgStyled src={elevatorImage} currentTop={currentTop} id={this.elevater_Component_Id}
+                designatedTop={designatedTop} animationTime={0.5}></ImgStyled>
+        );
     }
 }
 
