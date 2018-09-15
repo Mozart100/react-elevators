@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Elevator from './elevator';
-import Elevator2 from './elevator';
+import Elevator2 from './elevator2';
 
 
 const UlElevators = styled.ul`
@@ -42,7 +42,7 @@ class Elevators extends Component {
     return (
       <UlElevators itemHeight={totalHeight}>
         {this.props.elevators.map(e =>
-          <li key={e} ><Elevator componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></li>)}
+          <li key={e} ><Elevator2 componentId={e} componentHeight={componentHeight} amountOfFloors={amountOfFloors} /></li>)}
       </UlElevators>
       // <UlElevators itemHeight={totalHeight}>
       //   {this.props.elevators.map(e =>
