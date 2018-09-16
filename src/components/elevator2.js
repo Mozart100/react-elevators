@@ -60,12 +60,12 @@ class Elevator2 extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
 
         const { designatedFloor: numberFloorPressed, elevatorId: propsElevatorId } = nextProps;
-        const { elevatorId: stateElevatorId, componentHeight, currentTop, amountOfFloors } = prevState;
+        const { elevatorId: stateElevatorId, componentHeight, currentTop, amountOfFloors ,numberFloorPressed :stateNumberFloorPressed} = prevState;
 
         if (propsElevatorId === stateElevatorId && numberFloorPressed > 0) {
 
-           console.log('propsElevatorId',propsElevatorId);
-           console.log('stateElevatorId',stateElevatorId);
+            console.log('propsElevatorId', propsElevatorId);
+            console.log('stateElevatorId', stateElevatorId);
 
             const currentFloor = amountOfFloors - (currentTop / componentHeight);
 
@@ -86,6 +86,30 @@ class Elevator2 extends Component {
             }
             else {
                 return Object.assign({}, prevState, { isTimeout: true }, { animationDuration: 2 });
+            }
+        }
+        else {
+            if (stateNumberFloorPressed !== -1) {
+                const currentFloor = amountOfFloors - (currentTop / componentHeight);
+
+                if (stateNumberFloorPressed !== currentFloor) {
+
+                    //refactor
+                    let delta = componentHeight;
+                    if (currentFloor < stateNumberFloorPressed) {
+                        delta = delta * (-1);
+                    }
+
+                    return Object.assign({}, prevState, {
+                        // numberFloorPressed,
+                        designatedTop: currentTop + delta,
+                        animationDuration: 0.5,
+                        isTimeout: false
+                    })
+                }
+                else {
+                    return Object.assign({}, prevState, { isTimeout: true }, { animationDuration: 2 });
+                }
             }
         }
 
@@ -109,7 +133,7 @@ class Elevator2 extends Component {
             if (numberFloorPressed > 0) {
                 let direction = numberFloorPressed - currentFloor; //up or down
                 //Arrived
-                if (direction === 0) 
+                if (direction === 0)
                     this.runAudio();
                 else {
                     direction = direction < 0 ? 1 : -1;
