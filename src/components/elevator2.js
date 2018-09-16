@@ -7,7 +7,6 @@ import elevatorImage from './Images/elv.png';
 import { elevatorFloorChanged } from '../action/elevatorAction'
 import soundFile from '../components/Audio/ding.mp3'
 import styled, { keyframes } from 'styled-components';
-import './style/elevator-style.css'
 
 const ElevatorMoverStyled = (from, to) => keyframes`
    0% { top:${from}px; }
@@ -57,59 +56,40 @@ class Elevator2 extends Component {
     componentDidMount() {
     }
 
+    static GetNextPosition(numberFloorPressed, currentFloor, currentTop, componentHeight) {
+        if (numberFloorPressed !== currentFloor) {
+
+            //refactor
+            let designated = componentHeight;
+            if (currentFloor < numberFloorPressed) {
+                designated = designated * (-1);
+            }
+
+            return Object.assign({}, {
+                numberFloorPressed,
+                designatedTop: currentTop + designated,
+                animationDuration: 0.5,
+                isTimeout: false
+            })
+        }
+        return Object.assign({}, { isTimeout: true }, { animationDuration: 2 });
+    }
+
     static getDerivedStateFromProps(nextProps, prevState) {
 
         const { designatedFloor: numberFloorPressed, elevatorId: propsElevatorId } = nextProps;
-        const { elevatorId: stateElevatorId, componentHeight, currentTop, amountOfFloors ,numberFloorPressed :stateNumberFloorPressed} = prevState;
+        const { elevatorId: stateElevatorId, componentHeight, currentTop, amountOfFloors, numberFloorPressed: stateNumberFloorPressed } = prevState;
 
+        const currentFloor = amountOfFloors - (currentTop / componentHeight);
         if (propsElevatorId === stateElevatorId && numberFloorPressed > 0) {
 
-            console.log('propsElevatorId', propsElevatorId);
-            console.log('stateElevatorId', stateElevatorId);
-
-            const currentFloor = amountOfFloors - (currentTop / componentHeight);
-
-            if (numberFloorPressed !== currentFloor) {
-
-                //refactor
-                let designated = componentHeight;
-                if (currentFloor < numberFloorPressed) {
-                    designated = designated * (-1);
-                }
-
-                return Object.assign({}, prevState, {
-                    numberFloorPressed,
-                    designatedTop: currentTop + designated,
-                    animationDuration: 0.5,
-                    isTimeout: false
-                })
-            }
-            else {
-                return Object.assign({}, prevState, { isTimeout: true }, { animationDuration: 2 });
-            }
+            let obj = Elevator2.GetNextPosition(numberFloorPressed, currentFloor, currentTop, componentHeight);
+            return Object.assign({}, prevState, obj);
         }
         else {
             if (stateNumberFloorPressed !== -1) {
-                const currentFloor = amountOfFloors - (currentTop / componentHeight);
-
-                if (stateNumberFloorPressed !== currentFloor) {
-
-                    //refactor
-                    let delta = componentHeight;
-                    if (currentFloor < stateNumberFloorPressed) {
-                        delta = delta * (-1);
-                    }
-
-                    return Object.assign({}, prevState, {
-                        // numberFloorPressed,
-                        designatedTop: currentTop + delta,
-                        animationDuration: 0.5,
-                        isTimeout: false
-                    })
-                }
-                else {
-                    return Object.assign({}, prevState, { isTimeout: true }, { animationDuration: 2 });
-                }
+                let obj = Elevator2.GetNextPosition(stateNumberFloorPressed, currentFloor, currentTop, componentHeight);
+                return Object.assign({}, prevState, obj);
             }
         }
 
@@ -123,7 +103,7 @@ class Elevator2 extends Component {
     }
 
     animationFinished = () => {
-        const { designatedTop, componentHeight, numberFloorPressed, elevatorId, amountOfFloors, isTimeout } = this.state;
+        const { designatedTop, componentHeight, numberFloorPressed, elevatorId, amountOfFloors, isTimeout, currentTop } = this.state;
         const currentFloor = amountOfFloors - (designatedTop / componentHeight);
 
         if (isTimeout) {
@@ -132,14 +112,15 @@ class Elevator2 extends Component {
         else {
             if (numberFloorPressed > 0) {
                 let direction = numberFloorPressed - currentFloor; //up or down
-                //Arrived
-                if (direction === 0)
+
+                if (direction === 0) {
+                    direction = designatedTop < currentTop ? 1 : -1;
                     this.runAudio();
+                }
                 else {
                     direction = direction < 0 ? 1 : -1;
-                    this.props.elevatorFloorChanged(elevatorId, currentFloor, direction, numberFloorPressed);
                 }
-
+                this.props.elevatorFloorChanged(elevatorId, currentFloor, direction, numberFloorPressed);
                 this.setState({ currentTop: designatedTop })
             }
         }
@@ -148,17 +129,16 @@ class Elevator2 extends Component {
     componentDidMount = () => {
 
         const element = document.getElementById(this.elevater_Component_Id);
-        element.addEventListener('animationend', (e) => this.animationFinished());
+        element.addEventListener('animationend', this.animationFinished);
     };
+
+    componentWillUnmount = () => {
+        const element = document.getElementById(this.elevater_Component_Id);
+        element.removeEventListener('animationend', this.animationFinished);
+    }
 
     render() {
         const { currentTop, designatedTop, animationDuration, isTimeout } = this.state;
-        // const animationTime = Math.abs(designatedTop - currentTop) / 50 * 0.5;
-        // console.log('currentTop=', currentTop);
-        // console.log('isTimeout=', isTimeout);
-        // console.log('animationDuration=', animationDuration);
-        // console.log('designatedTop=', designatedTop);
-        console.log('render=');
         return (
             <ImgStyled src={elevatorImage} currentTop={currentTop} id={this.elevater_Component_Id}
                 designatedTop={designatedTop} isTimeout={isTimeout} animationTime={animationDuration}></ImgStyled>

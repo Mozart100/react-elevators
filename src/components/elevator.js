@@ -5,7 +5,6 @@ import elevatorImage from './Images/elv.png';
 import { elevatorFloorChanged } from '../action/elevatorAction'
 import soundFile from '../components/Audio/ding.mp3'
 import styled from 'styled-components';
-import './style/elevator-style.css'
 
 const ImgStyled = styled.img`
   background-image:url(${elevatorImage});

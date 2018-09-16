@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import './style/floors-style.css'
 
 // const 
 
@@ -15,7 +13,7 @@ class Floor extends Component {
 
     this.state = {
       componentId: props.componentId,
-      elevatorLocationFloor: 0,
+      elevatorLocationFloor: '',
       componentHeight: this.props.componentHeight
     }
   }
@@ -31,21 +29,26 @@ class Floor extends Component {
     let newState = Object.assign({}, prevState);
     const { FloorComponentId, elevatorLocationFloor, elevatorId } = nextProps;
     if (prevState.componentId === FloorComponentId) {
-      newState = Object.assign(newState, { elevatorLocationFloor: elevatorLocationFloor, elevatorId });
+      let msg = elevatorLocationFloor;
+      if (+elevatorLocationFloor === FloorComponentId) {
+        msg = "Bording"
+      }
+      
+        newState = Object.assign(newState, { elevatorLocationFloor: msg, elevatorId });
     }
     else {
       if (elevatorId === prevState.elevatorId) {
-        newState = Object.assign(newState, { elevatorLocationFloor: 0 });
+        newState = Object.assign(newState, { elevatorLocationFloor: '' });
       }
     }
     return newState;
   }
 
   render() {
-    const { elevatorLocationFloor, componentHeight: height } = this.state;
+    const { elevatorLocationFloor } = this.state;
     return (
       <div>
-        {elevatorLocationFloor > 0 && "("+elevatorLocationFloor+") "}
+        {elevatorLocationFloor && "(" + elevatorLocationFloor + ") "}
         <button onClick={this.props.clicked} value={this.props.componentId}> {this.props.componentId} </button>
       </div>
     )

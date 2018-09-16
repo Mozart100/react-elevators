@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import { requestedElevator } from '../action/elevatorAction'
 import Floor from './floor';
 // import UniquId  from 'react-html-id';
-import './style/floors-style.css'
 import styled from 'styled-components';
 
 const FloorStyled = styled.ul`
   list-style: none;
-  width: 100px;
+  width: 120px;
   float: left
 
   > li {

@@ -43,7 +43,7 @@ class App extends Component {
           <TitledStyled >Elevator HW</TitledStyled>
         </AppHeaderStyled>
 
-        <Building amountOfFloors={10} amountOfElevators={2} />
+        <Building amountOfFloors={10} amountOfElevators={4} />
 
       </AppStyled>
 
