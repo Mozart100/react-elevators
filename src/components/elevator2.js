@@ -107,7 +107,7 @@ class Elevator2 extends Component {
         const currentFloor = amountOfFloors - (designatedTop / componentHeight);
 
         if (isTimeout) {
-            this.props.elevatorFloorChanged(elevatorId, currentFloor, 2, numberFloorPressed);
+            this.props.elevatorFloorChanged(elevatorId, currentFloor, 0, numberFloorPressed);
         }
         else {
             if (numberFloorPressed > 0) {
@@ -115,10 +115,11 @@ class Elevator2 extends Component {
 
                 if (direction === 0) {
                     // direction = designatedTop < currentTop ? 1 : -1;
+                    direction = 2; //bording
                     this.runAudio();
                 }
                 else {
-                    direction = direction < 0 ? 1 : -1;
+                    direction = direction < 0 ? -1 : 1;
                 }
                 this.props.elevatorFloorChanged(elevatorId, currentFloor, direction, numberFloorPressed);
                 this.setState({ currentTop: designatedTop })

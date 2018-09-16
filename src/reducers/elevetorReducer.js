@@ -15,7 +15,7 @@ const initialState = {
     designatedFloorId: 0,
     elevatorLocationFloor: 0,
     elevatorId: 0,
-    direction:0  //-1,0,1,2
+    direction:0  //-2 -1,0,1,2
 
   }
 };
@@ -143,7 +143,7 @@ function findAllElevetorsSuitableToRequestFloor(elevators, requestedFloor) {
   for (let index = 0; index < elevators.length; index++) {
     const elev = elevators[index];
 
-    if (elev.direction === 0) {
+    if (elev.direction === 0 ) {
       elevs.push(elev);
       continue;
     }

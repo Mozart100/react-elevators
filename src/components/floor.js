@@ -32,7 +32,7 @@ class Floor extends Component {
 
       let msg = elevatorLocationFloor;
       if (+elevatorLocationFloor === FloorComponentId) {
-        if (direction === 0)
+        if (direction !== 0)
           msg = "Bording"
         else
           msg = ""
