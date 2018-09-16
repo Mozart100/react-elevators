@@ -27,14 +27,19 @@ class Floor extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
 
     let newState = Object.assign({}, prevState);
-    const { FloorComponentId, elevatorLocationFloor, elevatorId } = nextProps;
+    const { FloorComponentId, elevatorLocationFloor, elevatorId, direction } = nextProps;
     if (prevState.componentId === FloorComponentId) {
+
       let msg = elevatorLocationFloor;
       if (+elevatorLocationFloor === FloorComponentId) {
-        msg = "Bording"
+        if (direction === 0)
+          msg = "Bording"
+        else
+          msg = ""
+
       }
-      
-        newState = Object.assign(newState, { elevatorLocationFloor: msg, elevatorId });
+
+      newState = Object.assign(newState, { elevatorLocationFloor: msg, elevatorId });
     }
     else {
       if (elevatorId === prevState.elevatorId) {
@@ -60,6 +65,7 @@ const mapStateToProps = state => ({
   FloorComponentId: state.elevetorReducer.floorNotified.designatedFloorId,
   elevatorLocationFloor: state.elevetorReducer.floorNotified.elevatorLocationFloor,
   elevatorId: state.elevetorReducer.floorNotified.elevatorId,
+  direction: state.elevetorReducer.floorNotified.direction,
 });
 
 export default connect(mapStateToProps, {})(Floor);

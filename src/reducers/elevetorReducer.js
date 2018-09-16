@@ -15,6 +15,7 @@ const initialState = {
     designatedFloorId: 0,
     elevatorLocationFloor: 0,
     elevatorId: 0,
+    direction:0  //-1,0,1,2
 
   }
 };
@@ -68,6 +69,7 @@ export default function (state = initialState, action) {
       returnedState.floorNotified.designatedFloorId = elevator.designatedFloor;
       returnedState.floorNotified.elevatorLocationFloor = elevator.currentFloor;
       returnedState.floorNotified.elevatorId = elevator.elevatorId;
+      returnedState.floorNotified.direction = elevator.direction;
       return returnedState;
 
     default:
