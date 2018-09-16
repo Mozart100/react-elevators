@@ -9,12 +9,6 @@ import soundFile from '../components/Audio/ding.mp3'
 import styled, { keyframes } from 'styled-components';
 import './style/elevator-style.css'
 
-
-
-const TimeoutStyled = (from, to) => keyframes`
-   0% { background:red; }
-   100% { background:blue; }
-`;
 const ElevatorMoverStyled = (from, to) => keyframes`
    0% { top:${from}px; }
    100% { top:${to}px }
@@ -25,13 +19,10 @@ const ImgStyled = styled.img`
   width: 50px;
   margin: 0 auto;
   position: relative;
-  /* box-sizing:border-box; */
   text-align:center;
   left:25%;
-  /* animation: ${props => props.isTimeout ? TimeoutStyled(1, 2) : ElevatorMoverStyled(props.currentTop, props.designatedTop)} ${props => props.animationTime}s linear; */
   animation: ${props => props.isTimeout ? ElevatorMoverStyled(props.currentTop, props.currentTop + 1) : ElevatorMoverStyled(props.currentTop, props.designatedTop)} ${props => props.animationTime}s linear;
   animation-fill-mode:forwards;
-  /* animation-fill-mode:${props => props.isTimeout ? 'none' : 'forwards'}; */
   animation-iteration-count:1;
 `;
 
@@ -58,8 +49,9 @@ class Elevator2 extends Component {
     }
 
     static propTypes = {
-        // designatedFloor: PropTypes.number.isRequired,
-        // elevatorId: PropTypes.number.isRequired,
+        componentId: PropTypes.number.isRequired,
+        amountOfFloors: PropTypes.number.isRequired,
+        componentHeight: PropTypes.number.isRequired,
     };
 
     componentDidMount() {
@@ -71,6 +63,9 @@ class Elevator2 extends Component {
         const { elevatorId: stateElevatorId, componentHeight, currentTop, amountOfFloors } = prevState;
 
         if (propsElevatorId === stateElevatorId && numberFloorPressed > 0) {
+
+           console.log('propsElevatorId',propsElevatorId);
+           console.log('stateElevatorId',stateElevatorId);
 
             const currentFloor = amountOfFloors - (currentTop / componentHeight);
 
@@ -103,21 +98,19 @@ class Elevator2 extends Component {
         sound.play();
     }
 
-    animationFinished = (e) => {
+    animationFinished = () => {
         const { designatedTop, componentHeight, numberFloorPressed, elevatorId, amountOfFloors, isTimeout } = this.state;
         const currentFloor = amountOfFloors - (designatedTop / componentHeight);
 
         if (isTimeout) {
-            // console.log('isTimeout!!!!!!!!!!!!!!!!!!');
             this.props.elevatorFloorChanged(elevatorId, currentFloor, 0, numberFloorPressed);
         }
         else {
             if (numberFloorPressed > 0) {
                 let direction = numberFloorPressed - currentFloor; //up or down
                 //Arrived
-                if (direction === 0) {
+                if (direction === 0) 
                     this.runAudio();
-                }
                 else {
                     direction = direction < 0 ? 1 : -1;
                     this.props.elevatorFloorChanged(elevatorId, currentFloor, direction, numberFloorPressed);
@@ -131,7 +124,7 @@ class Elevator2 extends Component {
     componentDidMount = () => {
 
         const element = document.getElementById(this.elevater_Component_Id);
-        element.addEventListener('animationend', (e) => this.animationFinished(e));
+        element.addEventListener('animationend', (e) => this.animationFinished());
     };
 
     render() {

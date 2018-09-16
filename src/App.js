@@ -25,11 +25,6 @@ const ApplogoSpinStyled = keyframes`
   0% {transform: rotate(0deg);  }
   100% {transform: rotate(360deg);  }
 `;
-// const ApplogoSpinStyled = keyframes`
-
-//   from { transform: rotate(0deg); }
-//   to { transform: rotate(360deg); }
-// `;
 
 const LogoStyled = styled.img`
   animation: ApplogoSpinStyled infinite 20s linear;
@@ -48,7 +43,7 @@ class App extends Component {
           <TitledStyled >Elevator HW</TitledStyled>
         </AppHeaderStyled>
 
-        <Building amountOfFloors={10} amountOfElevators={1} />
+        <Building amountOfFloors={10} amountOfElevators={2} />
 
       </AppStyled>
 
